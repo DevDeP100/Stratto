@@ -1,2 +1,2 @@
-release: python manage.py migrate && python manage.py collectstatic --noinput --clear
+release: python -c "import os; print('DATABASE_URL:', os.getenv('DATABASE_URL'))" && python manage.py migrate && python manage.py collectstatic --noinput --clear
 web: gunicorn core.wsgi --bind 0.0.0.0:$PORT --workers 2 --threads 2 --timeout 120 --access-logfile - --error-logfile - --capture-output 
