@@ -24,6 +24,9 @@ COPY . .
 # Create static and media directories
 RUN mkdir -p /app/staticfiles /app/media
 
+# Collect static files
+RUN python manage.py collectstatic --noinput
+
 # Create a non-root user
 RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
