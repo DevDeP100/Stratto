@@ -71,18 +71,19 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <form>
+                        <form method="POST" action="{% url 'contato' %}">
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome</label>
-                                <input type="text" class="form-control" id="nome" required>
+                                <input type="text" class="form-control" id="nome" name="nome" required>
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">E-mail</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <input type="email" class="form-control" id="email" name="email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="mensagem" class="form-label">Mensagem</label>
-                                <textarea class="form-control" id="mensagem" rows="4" required></textarea>
+                                <textarea class="form-control" id="mensagem" name="mensagem" rows="4" required></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
                         </form>
