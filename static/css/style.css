@@ -102,4 +102,78 @@ body {
 
 .social-links a:hover {
     color: var(--accent-color);
+}
+
+/* Hero Banner Styles */
+.hero-banner {
+    background: var(--white);
+    border-radius: 15px;
+    padding: 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.carousel-item {
+    height: 400px;
+}
+
+.carousel-item img {
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+    bottom: 40px;
+}
+
+.carousel-caption h4 {
+    color: var(--white);
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.carousel-caption p {
+    color: var(--white);
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.carousel-indicators {
+    margin-bottom: 1rem;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+@media (max-width: 768px) {
+    .carousel-item {
+        height: 300px;
+    }
+    
+    .carousel-caption {
+        padding: 15px;
+        bottom: 20px;
+    }
+    
+    .carousel-caption h4 {
+        font-size: 1.4rem;
+    }
+    
+    .carousel-caption p {
+        font-size: 1rem;
+    }
 } 

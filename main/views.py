@@ -12,4 +12,15 @@ def home(request):
         messages.success(request, 'Mensagem enviada com sucesso! Entraremos em contato em breve.')
         return redirect('home')
     
-    return render(request, 'main/home.html')
+    return render(request, 'home.html')
+
+def contato(request):
+    if request.method == 'POST':
+        nome = request.POST.get('nome')
+        email = request.POST.get('email')
+        mensagem = request.POST.get('mensagem')
+
+        messages.success(request, 'Mensagem enviada com sucesso! Entraremos em contato em breve.')
+
+    
+    return render(request, 'home.html')

@@ -5,6 +5,7 @@ FROM python:3.11-slim
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV DJANGO_SETTINGS_MODULE=core.settings
+ENV PORT=8000
 
 # Set work directory
 WORKDIR /app
@@ -33,4 +34,4 @@ RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 
 # Command to run the application
-CMD ["gunicorn", "core.wsgi", "--bind", "0.0.0.0:8000", "--workers", "2", "--threads", "2", "--timeout", "120", "--access-logfile", "-", "--error-logfile", "-", "--capture-output"] 
+CMD gunicorn core.wsgi --bind 0.0.0.0:${PORT:-8000} --workers 2 --threads 2 --timeout 120 --access-logfile - --error-logfile - --capture-output 

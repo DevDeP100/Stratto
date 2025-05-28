@@ -13,7 +13,52 @@
                 <a href="#contato" class="btn btn-light btn-lg">Fale Conosco</a>
             </div>
             <div class="col-md-6">
-                <img src="{% static 'img/hero-image.png' %}" alt="Strattogestão" class="img-fluid" onerror="this.onerror=null; this.src='{% static 'img/default-hero.png' %}';">
+                <div id="consultoriaCarousel" class="carousel slide hero-banner" data-bs-ride="carousel" data-bs-interval="4000">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="{% static 'img/banner-dados1.jpg' %}" class="d-block w-100 rounded" alt="Análise de Dados">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>Análise de Dados</h4>
+                                <p>Transformando dados em insights valiosos</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static 'img/banner-dados2.jpg' %}" class="d-block w-100 rounded" alt="Visualização de Dados">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>Visualização de Dados</h4>
+                                <p>Gráficos e dashboards interativos</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static 'img/banner-dados3.jpg' %}" class="d-block w-100 rounded" alt="Business Intelligence">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>Business Intelligence</h4>
+                                <p>Tomada de decisão baseada em dados</p>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="{% static 'img/banner-gestao.jpg' %}" class="d-block w-100 rounded" alt="Gestão Empresarial">
+                            <div class="carousel-caption d-none d-md-block">
+                                <h4>Gestão Empresarial</h4>
+                                <p>Estratégias baseadas em métricas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#consultoriaCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#consultoriaCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Próximo</span>
+                    </button>
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#consultoriaCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#consultoriaCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#consultoriaCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#consultoriaCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -71,7 +116,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="{% url 'contato' %}">
+                        <form method="POST" action="{% url 'main:contato' %}">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label for="nome" class="form-label">Nome</label>
