@@ -38,7 +38,6 @@ def indexLinks(request):
 
 @login_required
 def painel(request, id):
-
     print(id)
     groups = User.objects.filter(username=request.user).values('groups')
     acessos  = Acesso.objects.filter(group__in=groups, link=id).values_list('link', flat=True)
@@ -47,7 +46,7 @@ def painel(request, id):
         links = Link.objects.filter(id__in=acessos).values()[0]
         return render(request, 'link/painel.html', {'frame': links})
     else:
-        return render(request, 'templates/Forbidden.html')
+        return render(request, 'link/forbidden.html')
     # return HttpResponse('Teste ok!!!')
 # Create your views here.
 
