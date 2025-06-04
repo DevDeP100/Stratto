@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.urls import reverse
 from .models import Link, Acesso
 from datetime import datetime
 # Register your models here.
@@ -12,7 +13,8 @@ class LinkAdmin(admin.ModelAdmin):
     readonly_fields = ('created_by', 'updated_by', 'created_at', 'updated_at')
 
     def link_clicavel(self, obj):
-        return format_html('<a href="{}" target="_blank">Acessar Painel</a>', obj.link)
+        painel_url = reverse('painel', args=[obj.id])
+        return format_html('<a href="{}" target="_blank">Acessar Painel</a>', painel_url)
     link_clicavel.short_description = 'Link'
 
     def save_model(self, request, obj, form, change):

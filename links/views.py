@@ -53,21 +53,3 @@ def painel(request, id):
 
 
 
-
-
-class verificar_status_tarefa(LoginRequiredMixin, View):
-
-
-    def get(self, request):
-        tarefas = Tarefa.objects.all()
-        context = {'tarefas': tarefas}
-        return render(request, 'tarefas/status_tarefa.html', context)
-    
-
-    def post(self, request, *args, **kwargs):
-
-        id_tarefa = request.POST.get('id_tarefa')
-        tarefa = Tarefa.objects.filter(status_tarefa='E').values('id', 'status_processo','inicio', 'fim')
-        return JsonResponse(list(tarefa), safe=False)
-    
-
