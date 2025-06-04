@@ -46,7 +46,7 @@ def painel(request, id):
         links = Link.objects.filter(id__in=acessos).values()[0]
         return render(request, 'link/painel.html', {'frame': links})
     else:
-        return render(request, 'link/forbidden.html')
+        return render(request, 'forbidden.html')
     # return HttpResponse('Teste ok!!!')
 # Create your views here.
 
