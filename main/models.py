@@ -138,7 +138,7 @@ class Orcamento(models.Model):
         db_table = 'orcamento'
     
     def __str__(self):
-        return f'{self.empresa.nome if self.empresa else ""} - {self.data} - {self.conta.nome if self.conta else ""}'
+        return f'{self.unidade.nome if self.unidade else ""} - {self.data} - {self.conta.nome if self.conta else ""}'
 
 
 class AcessoEmpresa(models.Model):
