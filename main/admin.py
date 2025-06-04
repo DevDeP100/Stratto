@@ -174,66 +174,65 @@ class CompanyFilteredAdmin(admin.ModelAdmin):
 
 @admin.register(empresa)
 class EmpresaAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'nome', 'cnpj', 'email', 'telefone', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'nome', 'cnpj', 'email', 'telefone')
     search_fields = ('nome', 'cnpj', 'email')
     list_filter = ('created_at', 'created_by', 'updated_by')
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(unidade)
 class UnidadeAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'nome', 'empresa', 'sigla', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'nome', 'empresa', 'sigla')
     search_fields = ('nome', 'sigla')
     list_filter = (EmpresaFilter, 'created_at', 'created_by', 'updated_by')
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(centro_resultado)
 class CentroResultadoAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'nome', 'empresa', 'codigo', 'nivel', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'nome', 'empresa', 'codigo', 'nivel')
     search_fields = ('codigo', 'nome', 'nivel')
     list_filter = (EmpresaFilter, 'nivel', 'created_at', 'created_by', 'updated_by')
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(dre)
 class DreAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'cd_nivel', 'nivel', 'cd_nivel2', 'nivel2', 'empresa', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'cd_nivel', 'nivel', 'cd_nivel2', 'nivel2', 'empresa')
     search_fields = ('cd_nivel', 'nivel', 'cd_nivel2', 'nivel2')
-    list_filter = (EmpresaFilter, 'created_at', 'created_by', 'updated_by')
+    list_filter = (EmpresaFilter,)
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(dfc)
 class DfcAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'codigo', 'nome', 'empresa', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'codigo', 'nome', 'empresa')
     search_fields = ('codigo', 'nome')
-    list_filter = (EmpresaFilter, 'created_at', 'created_by', 'updated_by')
+    list_filter = (EmpresaFilter,)
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(plano_contas)
 class PlanoContasAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'codigo', 'nome', 'empresa', 'nivel1', 'nivel2', 'dre', 'dfc', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'codigo', 'nome', 'empresa', 'nivel1', 'nivel2', 'dre', 'dfc')
     search_fields = ('codigo', 'nome', 'nivel1', 'nivel2')
-    list_filter = (EmpresaFilter, DreFilter, DfcFilter, 'created_at', 'created_by', 'updated_by')
+    list_filter = (EmpresaFilter, DreFilter, DfcFilter)
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(lancamento)
 class LancamentoAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'unidade', 'centro_resultado', 'plano_contas', 'data', 'valor', 'created_at', 'created_by', 'updated_by')
+    list_display = ('id', 'unidade', 'centro_resultado', 'plano_contas', 'data', 'valor')
     search_fields = ('obs',)
-    list_filter = (UnidadeFilter, CentroResultadoFilter, PlanoContasFilter, 'data', 'created_at', 'created_by', 'updated_by')
+    list_filter = (UnidadeFilter, CentroResultadoFilter, PlanoContasFilter, 'data')
     date_hierarchy = 'data'
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(Orcamento)
 class OrcamentoAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'unidade', 'data', 'conta', 'valor', 'created_at', 'updated_at', 'created_by', 'updated_by')
+    list_display = ('id', 'unidade', 'data', 'conta', 'valor')
     search_fields = ('unidade__nome', 'conta__nome')
-    list_filter = (UnidadeFilter, 'data', 'conta', 'created_at', 'updated_at', 'created_by', 'updated_by')
+    list_filter = (UnidadeFilter, 'data', 'conta')
     date_hierarchy = 'data'
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
 @admin.register(AcessoEmpresa)
 class AcessoEmpresaAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'unidade', 'usuario', 'created_at', 'updated_at', 'created_by', 'updated_by')
+    list_display = ('id', 'unidade', 'usuario')
     search_fields = ('unidade__nome', 'usuario__username')
-    list_filter = ('unidade', 'usuario', 'created_at', 'updated_at', 'created_by', 'updated_by')
-    date_hierarchy = 'created_at'
+    list_filter = ('unidade', 'usuario')
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
