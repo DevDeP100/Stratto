@@ -13,7 +13,7 @@ class LinkAdmin(admin.ModelAdmin):
     readonly_fields = ('created_by', 'updated_by', 'created_at', 'updated_at')
 
     def link_clicavel(self, obj):
-        painel_url = reverse('painel', args=[obj.id])
+        painel_url = reverse('links:painel', args=[obj.id])
         return format_html('<a href="{}" target="_blank">Acessar Painel</a>', painel_url)
     link_clicavel.short_description = 'Link'
 
