@@ -3,12 +3,12 @@ from django.urls import path
 
 from . import views
 
+app_name = 'links'
 
 urlpatterns = [
     # path("", views.indexLinks),
     path('', views.indexLinks, name='indexLinks'),
-    path('painel/<int:id>', views.painel, name='painel'),
-
+    path('painel/<int:link_id>/', views.painel_view, name='painel'),
 ]
    
 
