@@ -202,8 +202,8 @@ class DreAdmin(CompanyFilteredAdmin):
 
 @admin.register(dfc)
 class DfcAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'codigo', 'nome', 'empresa')
-    search_fields = ('codigo', 'nome')
+    list_display = ('id', 'codigo', 'nome', 'cd_nivel', 'nivel', 'cd_nivel2', 'nivel2', 'empresa')
+    search_fields = ('codigo', 'nome', 'cd_nivel', 'nivel', 'cd_nivel2', 'nivel2')
     list_filter = (EmpresaFilter,)
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 

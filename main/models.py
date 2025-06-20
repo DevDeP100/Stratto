@@ -71,6 +71,10 @@ class dre(models.Model):
 class dfc(models.Model):
     codigo = models.CharField(max_length=100)
     nome = models.CharField(max_length=100)
+    cd_nivel = models.CharField(max_length=100, null=True, blank=True)
+    nivel = models.CharField(max_length=100, null=True, blank=True)
+    cd_nivel2 = models.CharField(max_length=100, null=True, blank=True)
+    nivel2 = models.CharField(max_length=100, null=True, blank=True)
     empresa = models.ForeignKey(empresa, on_delete=models.SET_NULL, null=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='dfcs_created')
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='dfcs_updated')
