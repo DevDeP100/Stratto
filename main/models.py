@@ -1,12 +1,55 @@
 from django.db import models
 from django.contrib.auth.models import User
+
+
+class uf(models.Model):
+    codigo_uf = models.IntegerField(unique=True)
+    uf = models.CharField(max_length=2)
+    nome = models.CharField(max_length=100)
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+    regiao = models.CharField(max_length=100, null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='ufs_created')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='ufs_updated')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'uf'
+        ordering = ('nome',)
+
+    def __str__(self):
+        return self.nome
+    
+class cidade(models.Model):
+    nome = models.CharField(max_length=100)
+    uf = models.ForeignKey(uf, on_delete=models.SET_NULL, null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cidades_created')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cidades_updated')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'cidade'
+
+    def __str__(self):
+        return self.nome
+
 # Create your models here.
 class empresa(models.Model):
     nome = models.CharField(max_length=100)
     cnpj = models.CharField(max_length=14)
-    email = models.EmailField()
-    telefone = models.CharField(max_length=20)
+    inscricao_estadual = models.CharField(max_length=14, null=True, blank=True)
+    inscricao_municipal = models.CharField(max_length=14, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    telefone = models.CharField(max_length=20, null=True, blank=True)
     endereco = models.CharField(max_length=255, null=True, blank=True)
+    numero = models.CharField(max_length=10, null=True, blank=True)
+    cep = models.CharField(max_length=8, null=True, blank=True)
+    bairro = models.CharField(max_length=100, null=True, blank=True)
+    complemento = models.CharField(max_length=100, null=True, blank=True)
+    cidade = models.ForeignKey(cidade, on_delete=models.SET_NULL, null=True, blank=True)
+    uf = models.ForeignKey(uf, on_delete=models.SET_NULL, null=True, blank=True)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='empresas_created')
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='empresas_updated')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -17,8 +60,25 @@ class empresa(models.Model):
 
     def __str__(self):
         return self.nome
+    
+class cnae_empresa(models.Model):
+    empresa = models.ForeignKey(empresa, on_delete=models.SET_NULL, null=True)
+    cnae = models.CharField(max_length=100)
+    principal = models.BooleanField(default=False)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cnae_empresas_created')
+    updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='cnae_empresas_updated')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'cnae_empresa'
+
+    def __str__(self):
+        return self.cnae
+    
 
 
+    
 class unidade(models.Model):
     nome = models.CharField(max_length=100)
     empresa = models.ForeignKey(empresa, on_delete=models.SET_NULL, null=True)

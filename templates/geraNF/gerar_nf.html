@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gerar Nota Fiscal{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0 text-dark">Gerar Nota Fiscal</h1>
+                    <p class="text-muted mb-0">Crie notas fiscais para os tomadores de serviço</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulário de Geração de NF -->
+    <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-file-invoice me-2"></i>Dados da Nota Fiscal
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Informações da Empresa -->
+                        {% if empresa_usuario %}
+                        <div class="alert alert-info mb-4">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <strong>Empresa:</strong> {{ empresa_usuario.nome }}
+                        </div>
+                        {% endif %}
+
+                        <!-- Seleção do Tomador -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-user me-2"></i>Tomador de Serviço
+                                </h5>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="tomador" class="form-label">Selecionar Tomador *</label>
+                                    <select name="tomador" id="tomador" class="form-select" required>
+                                        <option value="">Selecione um tomador...</option>
+                                        {% for tomador in tomadores %}
+                                        <option value="{{ tomador.id }}">
+                                            {{ tomador.nome }} - {{ tomador.cpf_cnpj }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dados da Nota Fiscal -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-file-alt me-2"></i>Dados da Nota Fiscal
+                                </h5>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="competencia" class="form-label">Competência *</label>
+                                    <input type="month" name="competencia" id="competencia" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="valor" class="form-label">Valor *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">R$</span>
+                                        <input type="number" name="valor" id="valor" class="form-control" step="0.01" min="0" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="atividade" class="form-label">Atividade *</label>
+                                    <select name="atividade" id="atividade" class="form-select" required>
+                                        <option value="">Selecione a atividade...</option>
+                                        <option value="1">Serviços de Tecnologia da Informação</option>
+                                        <option value="2">Consultoria Empresarial</option>
+                                        <option value="3">Serviços de Contabilidade</option>
+                                        <option value="4">Serviços Jurídicos</option>
+                                        <option value="5">Serviços de Marketing</option>
+                                        <option value="6">Outros Serviços</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descrição do Serviço -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <h5 class="text-primary border-bottom pb-2">
+                                    <i class="fas fa-align-left me-2"></i>Descrição do Serviço
+                                </h5>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="descricao" class="form-label">Descrição Detalhada *</label>
+                                    <textarea name="descricao" id="descricao" class="form-control" rows="4" 
+                                              placeholder="Descreva detalhadamente os serviços prestados..." required></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Botões -->
+                        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                            <a href="{% url 'main:dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-file-invoice me-1"></i>Gerar Nota Fiscal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lista de Notas Fiscais Recentes -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-history me-2"></i>Notas Fiscais Recentes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center py-4">
+                        <i class="fas fa-file-invoice fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Nenhuma nota fiscal gerada</h5>
+                        <p class="text-muted">As notas fiscais geradas aparecerão aqui</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(44, 62, 80, 0.25);
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-right: none;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+</style>
+
+<script>
+// Definir competência atual
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    document.getElementById('competencia').value = `${year}-${month}`;
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Visualizar Tomador - {{ tomador.nome }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">
+                            <i class="fas fa-user me-2"></i>{{ tomador.nome }}
+                        </h4>
+                        <div class="d-flex gap-2">
+                            <a href="{% url 'geraNF:editar_tomador' tomador.id %}" class="btn btn-light btn-sm">
+                                <i class="fas fa-edit me-1"></i>Editar
+                            </a>
+                            <a href="{% url 'geraNF:lista_tomadores' %}" class="btn btn-outline-light btn-sm">
+                                <i class="fas fa-arrow-left me-1"></i>Voltar
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <!-- Informações da Empresa -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-building me-2"></i>Empresa
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Empresa</label>
+                                <p class="mb-0">{{ tomador.empresa.nome }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informações Pessoais -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-user me-2"></i>Informações Pessoais
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Nome</label>
+                                <p class="mb-0">{{ tomador.nome }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">CPF/CNPJ</label>
+                                <p class="mb-0">{{ tomador.cpf_cnpj }}</p>
+                            </div>
+                        </div>
+                        {% if tomador.inscricao_estadual %}
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Inscrição Estadual</label>
+                                <p class="mb-0">{{ tomador.inscricao_estadual }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if tomador.inscricao_municipal %}
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Inscrição Municipal</label>
+                                <p class="mb-0">{{ tomador.inscricao_municipal }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Contato -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-phone me-2"></i>Contato
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Email</label>
+                                <p class="mb-0">
+                                    <a href="mailto:{{ tomador.email }}" class="text-decoration-none">
+                                        <i class="fas fa-envelope me-1"></i>{{ tomador.email }}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Telefone</label>
+                                <p class="mb-0">
+                                    <a href="tel:{{ tomador.telefone }}" class="text-decoration-none">
+                                        <i class="fas fa-phone me-1"></i>{{ tomador.telefone }}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Endereço -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-map-marker-alt me-2"></i>Endereço
+                            </h5>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Endereço</label>
+                                <p class="mb-0">{{ tomador.endereco }}, {{ tomador.numero }}</p>
+                            </div>
+                        </div>
+                        {% if tomador.complemento %}
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Complemento</label>
+                                <p class="mb-0">{{ tomador.complemento }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Bairro</label>
+                                <p class="mb-0">{{ tomador.bairro }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Cidade</label>
+                                <p class="mb-0">{{ tomador.cidade.nome }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">UF</label>
+                                <p class="mb-0">{{ tomador.uf.sigla }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">CEP</label>
+                                <p class="mb-0">{{ tomador.cep }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Informações do Sistema -->
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="text-primary border-bottom pb-2">
+                                <i class="fas fa-info-circle me-2"></i>Informações do Sistema
+                            </h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Cadastrado por</label>
+                                <p class="mb-0">{{ tomador.created_by.username|default:"Sistema" }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Data de Cadastro</label>
+                                <p class="mb-0">{{ tomador.created_at|date:"d/m/Y H:i" }}</p>
+                            </div>
+                        </div>
+                        {% if tomador.updated_by %}
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Última Atualização</label>
+                                <p class="mb-0">{{ tomador.updated_at|date:"d/m/Y H:i" }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-label {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.fw-bold {
+    font-weight: 600 !important;
+}
+</style>
+{% endblock %} 

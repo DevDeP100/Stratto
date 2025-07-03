@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'links.apps.LinksConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    'geraNF.apps.GeraNFConfig',
 ]
 
 MIDDLEWARE = [
@@ -293,3 +294,8 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_HSTS_SECONDS = 31536000  # 1 year
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
+
+# Authentication Settings
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+LOGOUT_REDIRECT_URL = '/'

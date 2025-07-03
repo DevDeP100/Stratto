@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Início - Stratto Gestão{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Stratto Gestão</h1>
+                <p class="lead mb-4">Sistema completo de gestão empresarial para controle de dados, relatórios e análise financeira.</p>
+                <div class="d-flex gap-3">
+                    <a href="{% url 'main:dashboard' %}" class="btn btn-light btn-lg">
+                        <i class="fas fa-tachometer-alt me-2"></i>Acessar Dashboard
+                    </a>
+                    <a href="{% url 'main:contato' %}" class="btn btn-outline-light btn-lg">
+                        <i class="fas fa-envelope me-2"></i>Contato
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-chart-line fa-8x opacity-75"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="h3 mb-3">Funcionalidades Principais</h2>
+            <p class="text-muted">Descubra como nossa plataforma pode transformar sua gestão empresarial</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-box">
+                <i class="fas fa-building"></i>
+                <h4>Gestão de Empresas</h4>
+                <p class="text-muted">Controle completo de empresas e suas unidades organizacionais com sistema de permissões avançado.</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-box">
+                <i class="fas fa-chart-pie"></i>
+                <h4>Centros de Resultado</h4>
+                <p class="text-muted">Organize seus dados por centros de resultado para análise detalhada de performance.</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-box">
+                <i class="fas fa-list-alt"></i>
+                <h4>Planos de Contas</h4>
+                <p class="text-muted">Estrutura hierárquica de contas contábeis para organização eficiente dos dados financeiros.</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-box">
+                <i class="fas fa-exchange-alt"></i>
+                <h4>Lançamentos</h4>
+                <p class="text-muted">Sistema completo de lançamentos contábeis com validação e controle de integridade.</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-box">
+                <i class="fas fa-chart-bar"></i>
+                <h4>Relatórios DRE</h4>
+                <p class="text-muted">Demonstração do Resultado do Exercício com análise detalhada de receitas e despesas.</p>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="feature-box">
+                <i class="fas fa-money-bill-wave"></i>
+                <h4>Fluxo de Caixa</h4>
+                <p class="text-muted">Controle de fluxo de caixa com projeções e análise de liquidez empresarial.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="container-fluid bg-light py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="text-primary fw-bold">{{ empresas_count|default:"0" }}</h3>
+                    <p class="text-muted mb-0">Empresas Ativas</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="text-success fw-bold">{{ unidades_count|default:"0" }}</h3>
+                    <p class="text-muted mb-0">Unidades</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="text-info fw-bold">{{ lancamentos_count|default:"0" }}</h3>
+                    <p class="text-muted mb-0">Lançamentos</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stat-item">
+                    <h3 class="text-warning fw-bold">{{ links_count|default:"0" }}</h3>
+                    <p class="text-muted mb-0">Links Ativos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="card border-0 shadow">
+                <div class="card-body py-5">
+                    <h3 class="mb-3">Pronto para começar?</h3>
+                    <p class="text-muted mb-4">Acesse o dashboard e comece a gerenciar seus dados empresariais de forma eficiente.</p>
+                    <a href="{% url 'main:dashboard' %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-rocket me-2"></i>Começar Agora
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.stat-item {
+    padding: 1rem;
+}
+
+.stat-item h3 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.opacity-75 {
+    opacity: 0.75;
+}
+
+.fw-bold {
+    font-weight: 700 !important;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1.2;
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 300;
+}
+</style>
+{% endblock %} 

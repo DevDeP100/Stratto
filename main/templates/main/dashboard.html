@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Stratto Gestão{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-0 text-dark">Dashboard</h1>
+                    <p class="text-muted mb-0">Bem-vindo ao sistema de gestão</p>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{% url 'main:home' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-home me-2"></i>Início
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Empresas
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ empresas_count|default:"0" }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-building fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Unidades
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ unidades_count|default:"0" }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-map-marker-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Lançamentos
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ lancamentos_count|default:"0" }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-exchange-alt fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Links
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ links_count|default:"0" }}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-link fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Ações Rápidas</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'admin:main_empresa_add' %}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-plus me-2"></i>
+                                Nova Empresa
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'admin:main_unidade_add' %}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-plus me-2"></i>
+                                Nova Unidade
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'admin:main_lancamento_add' %}" class="btn btn-outline-info w-100">
+                                <i class="fas fa-plus me-2"></i>
+                                Novo Lançamento
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{% url 'admin:links_link_add' %}" class="btn btn-outline-warning w-100">
+                                <i class="fas fa-plus me-2"></i>
+                                Novo Link
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Links Recentes</h6>
+                </div>
+                <div class="card-body">
+                    {% if recent_links %}
+                        <div class="list-group list-group-flush">
+                            {% for link in recent_links %}
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ link.desc }}</h6>
+                                    <small class="text-muted">{{ link.empresa.nome }}</small>
+                                </div>
+                                <a href="{% url 'links:painel' link.id %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted text-center">Nenhum link disponível</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Informações do Sistema</h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-primary">Sobre o Sistema</h6>
+                            <p class="text-muted small">Stratto Gestão - Sistema de gestão empresarial para controle de dados e relatórios.</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-primary">Suporte</h6>
+                            <p class="text-muted small">
+                                <i class="fas fa-envelope me-1"></i>contato@strattogestao.com.br<br>
+                                <i class="fas fa-phone me-1"></i>(XX) XXXX-XXXX
+                            </p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-primary">Versão</h6>
+                            <p class="text-muted small">v1.0.0 - Desenvolvido com Django</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-primary">Status</h6>
+                            <span class="badge bg-success">Online</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.border-left-primary {
+    border-left: 0.25rem solid var(--primary-color) !important;
+}
+
+.border-left-success {
+    border-left: 0.25rem solid var(--success-color) !important;
+}
+
+.border-left-info {
+    border-left: 0.25rem solid var(--accent-color) !important;
+}
+
+.border-left-warning {
+    border-left: 0.25rem solid var(--warning-color) !important;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-info {
+    color: var(--accent-color) !important;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+.text-gray-800 {
+    color: var(--text-color) !important;
+}
+
+.text-gray-300 {
+    color: var(--text-muted) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.font-weight-bold {
+    font-weight: 600 !important;
+}
+
+.text-xs {
+    font-size: 0.75rem !important;
+}
+
+.text-uppercase {
+    text-transform: uppercase !important;
+}
+</style>
+{% endblock %} 

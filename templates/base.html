@@ -1,91 +1,126 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Strattogestão{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    {% block extra_css %}{% endblock %}
+    <title>{% block title %}Stratto Gestão{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="fas fa-chart-line me-2"></i>Strattogestão
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#servicos"><i class="fas fa-cogs me-1"></i>Serviços</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#sobre"><i class="fas fa-info-circle me-1"></i>Sobre</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contato"><i class="fas fa-envelope me-1"></i>Contato</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'admin:index' %}"><i class="fas fa-user-lock me-1"></i>Login</a>
-                    </li>
-                </ul>
-            </div>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h5 class="mb-0">
+                <i class="fas fa-chart-line me-2"></i>
+                <span class="sidebar-title">Stratto</span>
+            </h5>
         </div>
-    </nav>
-
-    {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
+        
+        <nav class="sidebar-nav">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'main:dashboard' %}">
+                        <i class="fas fa-tachometer-alt me-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'geraNF:lista_tomadores' %}">
+                        <i class="fas fa-users me-2"></i>
+                        <span>Tomadores</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'geraNF:gerar_nf' %}">
+                        <i class="fas fa-file-invoice me-2"></i>
+                        <span>Gerar NF</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
-    {% endif %}
 
-    {% block content %}{% endblock %}
-
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5>Strattogestão</h5>
-                    <p>Transformando dados em resultados para seu negócio.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contato</h5>
-                    <p>
-                        <i class="fas fa-envelope me-2"></i>contato@strattogestao.com.br<br>
-                        <i class="fas fa-phone me-2"></i>(XX) XXXX-XXXX
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Redes Sociais</h5>
-                    <div class="social-links">
-                        <a href="https://www.instagram.com/strattogestao/" target="_blank"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+    <!-- Main Content -->
+    <div class="main-content" id="main-content">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-link sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="top-nav-right">
+                    <span class="text-muted me-3">
+                        <i class="fas fa-clock me-1"></i>
+                        <span id="current-time"></span>
+                    </span>
+                    <div class="user-nav-info">
+                        <span class="user-name me-2">
+                            <i class="fas fa-user-circle me-1"></i>
+                            {% if user.is_authenticated %}{{ user.username }}{% else %}Usuário{% endif %}
+                        </span>
+                        <a href="{% url 'main:logout' %}" class="btn btn-outline-danger btn-sm">
+                            <i class="fas fa-sign-out-alt me-1"></i>
+                            <span>Sair</span>
+                        </a>
                     </div>
                 </div>
             </div>
-            <hr class="mt-4">
-            <div class="text-center">
-                <p class="mb-0">&copy; {% now "Y" %} Strattogestão. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
+        </nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    {% block extra_js %}{% endblock %}
+        <!-- Page Content -->
+        <div class="content-wrapper">
+            {% if messages %}
+                <div class="messages-container">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Sidebar toggle
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('collapsed');
+            document.getElementById('main-content').classList.toggle('expanded');
+        });
+
+        // Current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('pt-BR');
+            document.getElementById('current-time').textContent = timeString;
+        }
+        
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                const bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
 </body>
 </html> 
