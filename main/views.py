@@ -17,7 +17,7 @@ def home(request):
         messages.success(request, 'Mensagem enviada com sucesso! Entraremos em contato em breve.')
         return redirect('home')
     
-    return render(request, 'home.html')
+    return render(request, 'geraNF/lista_tomadores.html')
 
 def contato(request):
     if request.method == 'POST':
