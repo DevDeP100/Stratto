@@ -7,6 +7,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.db.models import Q
 from django.contrib.admin import SimpleListFilter
+from dateutil.relativedelta import relativedelta
 
 class AccessFilteredListFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
@@ -76,10 +77,10 @@ class PlanoContasFilter(AccessFilteredListFilter):
     parameter_name = 'plano_contas'
 
     def get_all_lookups(self):
-        return [(pc.id, pc.nome) for pc in plano_contas.objects.all()]
+        return [(pc.id, pc.nome) for pc in plano_contas.objects.filter(ativo=True)]
 
     def get_filtered_lookups(self, empresa_ids, unidade_ids):
-        return [(pc.id, pc.nome) for pc in plano_contas.objects.filter(empresa_id__in=empresa_ids)]
+        return [(pc.id, pc.nome) for pc in plano_contas.objects.filter(empresa_id__in=empresa_ids, ativo=True)]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -160,7 +161,7 @@ class CompanyFilteredAdmin(admin.ModelAdmin):
             kwargs["queryset"] = centro_resultado.objects.filter(empresa_id__in=empresa_ids)
         # Filter plano_contas choices
         elif db_field.name == "plano_contas":
-            kwargs["queryset"] = plano_contas.objects.filter(empresa_id__in=empresa_ids)
+            kwargs["queryset"] = plano_contas.objects.filter(empresa_id__in=empresa_ids, ativo=True)
         # Filter dre choices
         elif db_field.name == "dre":
             kwargs["queryset"] = dre.objects.filter(empresa_id__in=empresa_ids)
@@ -209,7 +210,7 @@ class DfcAdmin(CompanyFilteredAdmin):
 
 @admin.register(plano_contas)
 class PlanoContasAdmin(CompanyFilteredAdmin):
-    list_display = ('id', 'codigo', 'nome', 'empresa', 'nivel1', 'nivel2', 'dre', 'dfc')
+    list_display = ('id', 'codigo', 'nome', 'empresa', 'nivel1', 'nivel2', 'dre', 'dfc', 'ativo', 'natureza')
     search_fields = ('codigo', 'nome', 'nivel1', 'nivel2')
     list_filter = (EmpresaFilter, DreFilter, DfcFilter)
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
@@ -222,6 +223,36 @@ class LancamentoAdmin(CompanyFilteredAdmin):
     date_hierarchy = 'data'
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
+
+
+def geraOrcMesSeguinte(modeladmin, request, queryset):
+    
+    ultimaData = Orcamento.objects.raw("""
+                                        select u.id, max(data) data 
+                                        from unidade u 
+                                        join orcamento o on o.unidade_id = u.id
+                                        group by u.id
+                                        """)
+    
+    for orc in queryset:
+        dt = None
+        for rec in ultimaData:
+            if rec.id == orc.unidade.id:
+                dt = rec.data
+
+        novo_registro = Orcamento(
+            data = dt + relativedelta(months=1),
+            valor = orc.valor,
+            conta = orc.conta,
+            unidade = orc.unidade
+        )
+        
+        novo_registro.save()
+        
+    modeladmin.message_user(request, "Orçamento gerado com sucesso!!!")
+    
+geraOrcMesSeguinte.short_description='Gerar Orçamento Mês Seguinte'    
+
 @admin.register(Orcamento)
 class OrcamentoAdmin(CompanyFilteredAdmin):
     list_display = ('id', 'unidade', 'data', 'conta', 'valor')
@@ -229,6 +260,7 @@ class OrcamentoAdmin(CompanyFilteredAdmin):
     list_filter = (UnidadeFilter, 'data', 'conta')
     date_hierarchy = 'data'
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
+    actions = [geraOrcMesSeguinte]
 
 @admin.register(AcessoEmpresa)
 class AcessoEmpresaAdmin(CompanyFilteredAdmin):

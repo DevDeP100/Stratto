@@ -96,6 +96,8 @@ class plano_contas(models.Model):
     nivel2 = models.CharField(max_length=100)
     dre = models.ForeignKey(dre, on_delete=models.SET_NULL, null=True, blank=True)
     dfc = models.ForeignKey(dfc, on_delete=models.SET_NULL, null=True, blank=True)
+    ativo = models.BooleanField(default=True)
+    natureza = models.IntegerField(default=1)
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='planos_created')
     updated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='planos_updated')
     created_at = models.DateTimeField(auto_now_add=True)
