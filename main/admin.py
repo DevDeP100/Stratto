@@ -215,6 +215,41 @@ class PlanoContasAdmin(CompanyFilteredAdmin):
     list_filter = (EmpresaFilter, DreFilter, DfcFilter)
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
 
+def geraLancMesSeguinte(modeladmin, request, queryset):
+    ultimaData = lancamento.objects.raw("""
+        select u.id, max(l.data) as data
+        from unidade u
+        join lancamento l on l.unidade_id = u.id
+        group by u.id
+    """)
+
+    for lanc in queryset:
+        if not lanc.unidade_id:
+            continue
+        dt = None
+        for rec in ultimaData:
+            if rec.id == lanc.unidade_id:
+                dt = rec.data
+                break
+        if dt is None:
+            continue
+
+        novo_registro = lancamento(
+            data=dt + relativedelta(months=1),
+            valor=lanc.valor,
+            unidade=lanc.unidade,
+            centro_resultado=lanc.centro_resultado,
+            plano_contas=lanc.plano_contas,
+            obs=lanc.obs,
+        )
+        novo_registro.save()
+
+    modeladmin.message_user(request, "Lançamento gerado com sucesso!!!")
+
+
+geraLancMesSeguinte.short_description = "Gerar Lançamento Mês Seguinte"
+
+
 @admin.register(lancamento)
 class LancamentoAdmin(CompanyFilteredAdmin):
     list_display = ('id', 'unidade', 'centro_resultado', 'plano_contas', 'data', 'valor')
@@ -222,7 +257,7 @@ class LancamentoAdmin(CompanyFilteredAdmin):
     list_filter = (UnidadeFilter, CentroResultadoFilter, PlanoContasFilter, 'data')
     date_hierarchy = 'data'
     readonly_fields = ('created_at', 'updated_at', 'created_by', 'updated_by')
-
+    actions = [geraLancMesSeguinte]
 
 
 def geraOrcMesSeguinte(modeladmin, request, queryset):

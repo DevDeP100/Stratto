@@ -29,8 +29,9 @@ media/
 staticfiles/
 
 # Virtual Environment
-venv/
+svenv/
 ENV/
+
 
 # IDE
 .idea/
@@ -45,5 +46,3 @@ Thumbs.db
 # Environment variables
 .env
 
-# Environment variables
-.env 
